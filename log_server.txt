@@ -1,0 +1,115 @@
+2017-04-25 21:23:54
+Welcome to TypeRacer v1.0
+Welcome 
+
+Closing TypeRacer
+2017-04-25 21:24:05
+Welcome to TypeRacer v1.0
+Welcome 
+wefwef
+Server Option selected
+Choose Dictonary: 
+Dictonary Loaded
+All interfaces displayed
+Csharp
+2017-04-25 21:24:10
+Welcome to TypeRacer v1.0
+Welcome 
+wef
+2017-04-25 21:25:46
+Welcome to TypeRacer v1.0
+Welcome 
+rfvef
+Server Option selected
+Choose Dictonary: 
+Dictonary Loaded
+All interfaces displayed
+Csharp
+2017-04-25 21:25:55
+Welcome to TypeRacer v1.0
+Welcome 
+sdfv
+2017-04-25 21:26:32
+Welcome to TypeRacer v1.0
+Welcome 
+dfvdfv
+Closing TypeRacer
+2017-04-25 21:30:15
+Welcome to TypeRacer v1.0
+Welcome 
+hahaharshid
+Server Option selected
+Choose Dictonary: 
+Dictonary Loaded
+All interfaces displayed
+Unix
+Requried Clients Connected
+Sending Game Start commands
+Game Start commands sent
+Game Started!!
+GAME OVER!
+All scores sent to all clients
+Scoreboard Displayed
+Reached Main Menu
+Server Option selected
+Choose Dictonary: 
+Dictonary Loaded
+All interfaces displayed
+Csharp
+Error in binding
+Sending Game Start commands
+Game Start commands sent
+Game Started!!
+GAME OVER!
+All scores sent to all clients
+Client Disconnected
+Client Disconnected
+2017-04-25 23:17:51
+Welcome to TypeRacer v1.0
+Welcome 
+shubha
+Server Option selected
+Choose Dictonary: 
+Dictonary Loaded
+All interfaces displayed
+Csharp
+2017-04-25 23:27:55
+Welcome to TypeRacer v1.0
+Welcome 
+shubha
+2017-04-25 23:29:22
+Welcome to TypeRacer v1.0
+Welcome 
+shubham
+Server Option selected
+Choose Dictonary: 
+Dictonary Loaded
+All interfaces displayed
+Csharp
+2017-04-25 23:29:44
+Welcome to TypeRacer v1.0
+Welcome 
+asfc
+Requried Clients Connected
+Sending Game Start commands
+Game Start commands sent
+Game Started!!
+GAME OVER!
+All scores sent to all clients
+Scoreboard Displayed
+Reached Main Menu
+Closing TypeRacer
+Closing TypeRacer
+2017-04-25 23:50:09
+Welcome to TypeRacer v1.0
+Welcome 
+efsdf
+Server Option selected
+Choose Dictonary: 
+Dictonary Loaded
+All interfaces displayed
+French
+2017-04-26 00:16:23
+Welcome to TypeRacer v1.0
+Welcome 
+Bhuvnesh

@@ -1,0 +1,83 @@
+2017-04-25 21:23:54
+Welcome to TypeRacer v1.0
+2017-04-25 21:24:05
+Welcome to TypeRacer v1.0
+2017-04-25 21:24:10
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+172.17.48.161
+Port chosen: 
+6025
+Connection successful
+Client connected to server
+2017-04-25 21:25:46
+Welcome to TypeRacer v1.0
+2017-04-25 21:25:55
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+192.168.43.111
+Port chosen: 
+6025
+Connection successful
+Client connected to server
+2017-04-25 21:26:32
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+192.168.43.111
+Port chosen: 
+6025
+Connection successful
+Client connected to server
+Game Started!!
+Game Started!!
+GAME OVER!
+Scores sent to server
+GAME OVER!
+Scores sent to server
+Scoreboard Displayed
+Scoreboard Displayed
+Reached Main Menu
+Reached Main Menu
+Client Option selected
+2017-04-25 21:30:15
+Welcome to TypeRacer v1.0
+2017-04-25 23:17:51
+Welcome to TypeRacer v1.0
+2017-04-25 23:27:55
+Welcome to TypeRacer v1.0
+Client Option selected
+2017-04-25 23:29:22
+Welcome to TypeRacer v1.0
+2017-04-25 23:29:44
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+6025
+Connection successful
+Client connected to server
+Game Started!!
+GAME OVER!
+Scores sent to server
+Scoreboard Displayed
+Reached Main Menu
+2017-04-25 23:50:09
+Welcome to TypeRacer v1.0
+2017-04-26 00:16:23
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+192.168.43.56
+Port chosen: 
+2048
+Error in connecting to server
+Client connected to server
