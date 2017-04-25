@@ -233,21 +233,6 @@ static void parseinput(int *escend, char *input, clock_t *starttime, unsigned *i
 				input[*inputpos + 1] = '\0';
 			}
 			input[(*inputpos)++] = nappi;
-			
-			for (i = 0; i < 22; i++) 
-			{
-				if (strcmp(input, wordstring[i]))
-				{
-					continue;
-				}
-				now.score += *inputpos;
-				clearword(i, wordpos[i], strlen(wordstring[i]));
-				wordpos[i] = -2;
-				clearword(23, 2, 19);
-				*inputpos = 0;
-				input[0]= '\0';
-				my_strncpy(wordstring[i], " ", sizeof(wordstring[i]) - 1);
-			}
 			break;
 	}
 	move(23, 2 + *inputpos);
