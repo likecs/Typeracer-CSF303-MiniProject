@@ -10,6 +10,7 @@ Instructor : Dr.Rahul Banerjee
 Typeracer is 6-level multiplayer networking game, TypeRacer. The game has a common whiteboard for all the users and leaderboard for displaying the game-screen and the scores. The game is able to concurrently handle all the requests for its users and update the scores (based on number of characters typed in the current game) accordingly. The levels of the game are defined in terms of the dictionary being chosen for the playing the game. 6 different types of dictionaries, English, French, Programming etc. are provided with the game. The dictionaries were taken from the following <a href="http://kodu.ut.ee/~zolki/oppetoo/masinakiri/">link</a>.
 
 <h3>How to build</h3>
+Before building, please make sure that you have installed "pthreads" and "curses" library.
 Open your terminal and type the following command
 
 	make all
