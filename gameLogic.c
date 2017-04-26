@@ -238,7 +238,7 @@ static void parseinput(int *escend, char *input, clock_t *starttime, unsigned *i
 	move(23, 2 + *inputpos);
 }
 
-int play(void)
+int play()
 {
 	if(SERV)
 	writeServerLog("Game Started!!");
@@ -362,7 +362,9 @@ int play(void)
 		now.ratio = (1 - now.speed / now.totalspeed) * 100;
 	}
 	sleep(3);
-	while(scoreReceive != (CLIENTS + 1));
+	// pthread_mutex_lock(&clientlist_mutex);
+	// if (scoreReceive == (client_list.size + 1))
+	// pthread_mutex_unlock(&clientlist_mutex);
 
 	clear();
 	refresh();
@@ -375,9 +377,9 @@ int play(void)
 	mvprintw(10, 20, _("Total CPS:\t\t%2.3f"), now.totalspeed);
 	mvprintw(11, 20, _("Correct CPS:\t%2.3f"), now.speed);
 	mvprintw(12, 20, _("Typo ratio:\t\t%2.1f%%"), now.ratio);
-	qsort(final, CLIENTS+1, sizeof(struct scores), cmpfunc);
+	qsort(final, scoreReceive, sizeof(struct scores), cmpfunc);
 	mvaddstr(14, 20, _("Rankings:"));
-	for(int i = 0; i < CLIENTS+1; i++)
+	for(int i = 0; i < scoreReceive; i++)
 	{
 		mvprintw(15+i, 20, _("%d. %s %d"),i+1, final[i].name, final[i].score);
 	}
@@ -408,6 +410,7 @@ void freewords(void)
 
 int loadwords(char *filename)
 {
+	initaliseTrie(filename);
 	int fd, ignore, k, l;
 	char *curpos, *newpos, *p, *q;
 	char **pointer;

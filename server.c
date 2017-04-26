@@ -70,11 +70,11 @@ void showInterfaces()
 				printf("getnameinfo() failed: %s\n", gai_strerror(s));
 				return;
 			}
-			mvprintw(5+i, 5, _("%s\t\taddress: <%s>"), ifa->ifa_name, host);
+			mvprintw(5+i, 5, _("%-20s address: <%s>"), ifa->ifa_name, host);
 			i++;
 		}
 	}
-	 writeServerLog("All interfaces displayed");
+	writeServerLog("All interfaces displayed");
 
 	freeifaddrs(ifaddr);
 }
@@ -152,7 +152,7 @@ void initserver()
 		}
 	}
 	writeServerLog("Requried Clients Connected");
-	mvprintw(11, 5, _("Players Connected: %d / 2\t\t\t\t"),client_list.size);
+	mvprintw(11, 5, _("Players Connected: %d / %d\t\t\t\t"),client_list.size, CLIENTS);
 	pressanykey(12,5);
 }
 

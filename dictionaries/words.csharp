@@ -104,5 +104,3 @@ yield
 #region
 #endregion
 #pragma
-#pragma warning
-#pragma checksum

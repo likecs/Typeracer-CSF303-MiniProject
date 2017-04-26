@@ -81,3 +81,246 @@ Port chosen:
 2048
 Error in connecting to server
 Client connected to server
+2017-04-26 14:55:35
+Welcome to TypeRacer v1.0
+2017-04-26 14:55:58
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+2017-04-26 14:56:48
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+2017-04-26 14:57:19
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Game Started!!
+Game Started!!
+Game Started!!
+GAME OVER!
+Scores sent to server
+GAME OVER!
+Scores sent to server
+GAME OVER!
+Scores sent to server
+Scoreboard Displayed
+Scoreboard Displayed
+Scoreboard Displayed
+Reached Main Menu
+Reached Main Menu
+Reached Main Menu
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+2017-04-26 15:01:15
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+2017-04-26 15:01:39
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Game Started!!
+Game Started!!
+GAME OVER!
+Scores sent to server
+GAME OVER!
+Scores sent to server
+2017-04-26 15:09:50
+Welcome to TypeRacer v1.0
+2017-04-26 15:10:05
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+2017-04-26 15:10:24
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+2017-04-26 15:10:40
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Game Started!!
+Game Started!!
+Game Started!!
+GAME OVER!
+Scores sent to server
+GAME OVER!
+Scores sent to server
+GAME OVER!
+Scores sent to server
+Scoreboard Displayed
+Scoreboard Displayed
+Scoreboard Displayed
+Reached Main Menu
+Reached Main Menu
+Reached Main Menu
+Client Option selected
+Client Option selected
+2017-04-26 15:15:56
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Game Started!!
+Game Started!!
+Game Started!!
+GAME OVER!
+Scores sent to server
+2017-04-26 15:23:20
+Welcome to TypeRacer v1.0
+2017-04-26 15:23:32
+Welcome to TypeRacer v1.0
+2017-04-26 15:23:45
+Welcome to TypeRacer v1.0
+2017-04-26 15:23:59
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Game Started!!
+Game Started!!
+Game Started!!
+GAME OVER!
+Scores sent to server
+2017-04-26 15:32:41
+Welcome to TypeRacer v1.0
+2017-04-26 15:32:50
+Welcome to TypeRacer v1.0
+2017-04-26 15:33:07
+Welcome to TypeRacer v1.0
+2017-04-26 15:33:19
+Welcome to TypeRacer v1.0
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Client Option selected
+Client started
+Host chosen: 
+127.0.0.1
+Port chosen: 
+2048
+Connection successful
+Client connected to server
+Game Started!!
+Game Started!!
+Game Started!!
+GAME OVER!
+Scores sent to server
+Scoreboard Displayed
+Reached Main Menu

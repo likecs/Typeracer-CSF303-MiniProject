@@ -21,7 +21,6 @@ int main(int argc, char **argv)
 	int wheretogo;
 	char serv[MAXHOSTNAMELEN];
 	unsigned long val;
-	initializeRules();
 	initcursestuff();
 
 	time_t timer;
@@ -52,6 +51,7 @@ int main(int argc, char **argv)
 		ply = 0;
 		escend = 0;
 		timerval = 120;
+		initializeRules();
 		switch (wheretogo = getch()) 
 		{
 			case '1':
