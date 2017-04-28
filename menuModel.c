@@ -74,6 +74,79 @@ void initcursestuff(void)
 	flushinp();
 }
 
+int chooseSettings(void)
+{
+	int exitnow;
+	char defcli[6];
+	char defport[6];
+	char deftimer[6];
+	char cli[6];
+	char port[6];
+	char timer[6];
+	opt.port = DEFAULT_PORT;
+	exitnow = 0;
+	cli[0] = '3';
+	cli[1] = '\0';
+	timer[0] = '6';timer[1]='0';timer[2]='\0';
+	strcpy(port ,"2048");
+	strcpy(deftimer, timer);
+	strcpy(defport, port);
+	strcpy(defcli, cli);
+	do 
+	{
+		clear();
+		mvprintw( 6, 30, _("1. No. of Players (Max 3 players excluding you) : %s"), cli);
+		mvprintw( 7, 30, _("2. Port: %s"), port);
+		mvprintw( 8, 30, _("3. Timer for each game: %s seconds"), timer);
+		mvaddstr( 9, 30, _("4. Connect "));
+		mvaddstr(11, 30, _("Choose: "));
+		switch (getch()) 
+		{
+			case '1':
+				mvprintw(11, 30, _("Number of Players: %s"), cli);
+				getInput(11, 31 + strlen(_("Number of Players:")), cli, sizeof(cli) - 1);
+				cli[sizeof(cli) - 1] = '\0';
+				CLIENTS = strtol(cli, NULL, 10);
+				if (CLIENTS > 3)
+				{
+					CLIENTS = 3;
+					strcpy(cli, defcli);
+				}
+				exitnow = 0;
+				break;
+			case '2':
+				mvprintw(11, 30, _("Enter Port: %s"), port);
+				getInput(11, 31 + strlen(_("Enter Port:")), port, sizeof(port) - 1);
+				port[sizeof(port) - 1] = '\0';
+				opt.port = strtol(port, NULL, 10);
+				if (opt.port <= 1024)
+				{
+					opt.port = DEFAULT_PORT;
+					strcpy(port, defport);
+				}
+				exitnow = 0;
+				break;
+			case '3':
+				mvprintw(11, 30, _("Enter Timer Value: %s"), timer);
+				getInput(11, 31 + strlen(_("Enter Timer Value:")), timer, sizeof(timer) - 1);
+				timer[sizeof(timer) - 1] = '\0';
+				timerval = strtol(timer, NULL, 10);
+				if (timerval > 300)
+				{
+					timerval = 60;
+					strcpy(timer, deftimer);
+				}
+				exitnow = 0;
+				break;
+			case '4':
+				exitnow = 1;
+			default:
+				break;
+		}
+	} while (!exitnow);
+	return 0;
+}
+
 int choosewordfile(void)
 {
 	int a, k;

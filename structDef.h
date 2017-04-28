@@ -101,12 +101,14 @@ extern int scoreReceive;
 extern int isconnected, aliaslen;
 extern int ply;
 extern char option[LINEBUFF];
-extern struct scores final[CLIENTS+1];
+extern struct scores final[MAXCLIENTS+1];
 extern int escend;
 extern int timerval;
+extern int DEFAULT_PORT;
+extern int CLIENTS;
 
 int sockfd, newfd;
-struct THREADINFO thread_info[CLIENTS];
+struct THREADINFO thread_info[MAXCLIENTS];
 struct LLIST client_list;
 pthread_mutex_t clientlist_mutex;
 

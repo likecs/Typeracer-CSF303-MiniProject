@@ -8,6 +8,7 @@ void sendFoundWords_client(char *newword)
 	strcpy(packet.alias, "CLIENTFOUND");
 	strcpy(packet.buff, newword);
 	/* send request to close this connetion */
+	if(escend!=2)
 	sent = send(sockfd, (void *)&packet, sizeof(struct PACKET), 0);
 }
 
@@ -16,16 +17,20 @@ int receiveWords()
 	int bytes;
 	struct PACKET packet;
 	int i;
-	while(i = recv(sockfd, (void *)&packet, sizeof(struct PACKET), MSG_PEEK))
+	while(1)
 	{
-		if(i < 1)
+		bytes = recv(sockfd, (void *)&packet, sizeof(struct PACKET), 0);
+		if (bytes < 1)
 		{
+			escend = 2;
+			isconnected = 0;
+			writeClientLog("Server diconnected");
 			return 0;
 		}
-		bytes = recv(sockfd, (void *)&packet, sizeof(struct PACKET), 0);
 		if(!strcmp(packet.buff,"START"))
 		{   
 			ply = 1;
+			timerval = atoi(packet.option);
 			return 1;
 		}
 		else if(!strcmp(packet.alias, "SERVFOUND") && CLIENT)
@@ -95,7 +100,7 @@ void startclient()
 	opt.port = DEFAULT_PORT;
 	exitnow = 0;
 	serv[0] = '\0';
-	strcpy(serv , DEAFAULT_IP);
+	strcpy(serv , DEFAULT_IP);
 	strcpy(port ,"2048");
 	do 
 	{

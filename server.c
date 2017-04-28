@@ -1,8 +1,8 @@
 #include "server.h"
 
-
 void startserver(void)
 {
+	chooseSettings();
 	int k = 0;
 	k = choosewordfile();
 	if(k == -1)
@@ -32,7 +32,7 @@ void startserver(void)
 	}
 	char *mp[6] = {"Csharp", "English", "French", "DOS", "Programming", "Unix"};
 	clear();
-	mvaddstr(2, 5, _("Server is up and running on PORT 2048..."));
+	mvprintw(2, 5, _("Server is up and running on PORT %d..."), opt.port);
 	mvaddstr(3, 5, _("Available Interfaces..."));
 	showInterfaces();
 	mvprintw(8, 5, _("Chosen Dictionary: %s"), mp[k-1]);
@@ -67,7 +67,8 @@ void showInterfaces()
 							host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
 			if (s != 0) 
 			{
-				printf("getnameinfo() failed: %s\n", gai_strerror(s));
+				writeServerLog("getnameinfo() failed:");
+				writeServerLog(" %s\n", gai_strerror(s));
 				return;
 			}
 			mvprintw(5+i, 5, _("%-20s address: <%s>"), ifa->ifa_name, host);
@@ -109,7 +110,7 @@ void initserver()
 	}
 	/* set initial values */
 	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(DEFAULT_PORT);
+	serv_addr.sin_port = htons(opt.port);
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	memset(&(serv_addr.sin_zero), 0, 8);
 	/* bind address with socket */
@@ -218,7 +219,8 @@ void sendStart()
 	{
 		struct PACKET spacket;
 		memset(&spacket, 0, sizeof(struct PACKET));
-		strcpy(spacket.option, "msg");
+		sprintf(spacket.option, "%d", timerval);
+		// strcpy(spacket.option, "msg");
 		strcpy(spacket.alias, "SERVER");
 		strcpy(spacket.buff, "START");
 		sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct PACKET), 0);

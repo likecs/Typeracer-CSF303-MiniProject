@@ -134,16 +134,6 @@ static void parseinput(int *escend, char *input, clock_t *starttime, unsigned *i
 		case 27: /* ESC */
 			*escend = 1;
 			break;
-		case KEY_UP:
-			pausetime = timenow();
-			mvaddstr(23, 2, _("       PAUSED       "));
-			move(23, 2);
-			while (getch() == ERR)
-				;
-			*starttime += timenow() - pausetime;
-			mvaddstr(23, 2, "                    ");
-			flushinp();
-		/* FALLTHROUGH */
 		case 21: /* ^U */
 			if (*inputpos) 
 			{
@@ -332,6 +322,7 @@ int play()
 		strcpy(spacket.option, "SCORES");
 		strcpy(spacket.alias, opt.name);
 		sprintf(spacket.buff,"%d", now.score);
+		if(escend!=2)
 		sent = send(sockfd, (void *)&spacket, sizeof(struct PACKET), 0);
 		writeClientLog("Scores sent to server");
 	}
@@ -410,7 +401,7 @@ void freewords(void)
 
 int loadwords(char *filename)
 {
-	initaliseTrie(filename);
+	// initaliseTrie(filename);
 	int fd, ignore, k, l;
 	char *curpos, *newpos, *p, *q;
 	char **pointer;

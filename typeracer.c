@@ -12,9 +12,11 @@ float rate;
 int scoreReceive = 0;
 int isconnected, aliaslen;
 char option[LINEBUFF];
-struct scores final[CLIENTS+1];
+struct scores final[MAXCLIENTS+1];
 int ply, escend;
 int timerval = 120;
+int DEFAULT_PORT = 2048;
+int CLIENTS = 1;
 
 int main(int argc, char **argv)
 {
@@ -30,7 +32,7 @@ int main(int argc, char **argv)
     time(&timer);
     tm_info = localtime(&timer);
 
-    strftime(buffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
+    strftime(buffer, 26, "\n%Y-%m-%d %H:%M:%S\n", tm_info);
    	writeServerLog(buffer);
    	writeClientLog(buffer);
 	writeServerLog("Welcome to TypeRacer v1.0");
@@ -44,13 +46,14 @@ int main(int argc, char **argv)
 		/*come back to inital states */
         SERV = 0; CLIENT = 0;
 		wordcount = 0;
-		graph = 0;
 		rate = 0;
 		scoreReceive = 0;
 		isconnected = 0; aliaslen = 0;
 		ply = 0;
 		escend = 0;
 		timerval = 120;
+		DEFAULT_PORT = 2048;
+		CLIENTS = 1;
 		initializeRules();
 		switch (wheretogo = getch()) 
 		{

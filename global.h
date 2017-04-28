@@ -36,13 +36,12 @@
 
 
 
-#define DEAFAULT_IP 		"127.0.0.1"
-#define DEFAULT_PORT		2048
+#define DEFAULT_IP 			"127.0.0.1"
 #define BACKLOG 			10
-#define CLIENTS 			3
 #define BUFFSIZE 			1024
 #define ALIASLEN 			32
 #define OPTLEN 				16
 #define LINEBUFF 			2048
+#define MAXCLIENTS			3
 
 #endif
