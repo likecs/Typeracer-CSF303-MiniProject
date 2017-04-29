@@ -3,88 +3,80 @@
 
 #include "global.h"
 
-struct stats 
+struct info 
 {
-	uint8_t level;
-	uint32_t score;
-	uint32_t tcount;
-	uint32_t wordswritten;
-	float ratio;
-	float speed;
-	float totalspeed;
-	clock_t duration;
-	unsigned int sinit;
-	char name[21];
-} now;
-
-struct opt 
-{
-	int cheat;
-	int net;
 	int port;
+	int num;
 	unsigned int seed;
-	int usecolors;
 	char name[21];
-} opt;
+} info;
 
-struct rules 
+struct constrnts 
 {
 	int label;
-	int minwords;
-	int maxwords;
-	int minspeed;
-	int maxspeed;
+	int mnwrds;
+	int mxwrds;
+	int mnspeed;
+	int mxspeed;
 	int step;
 	int smooth;
 	float spd_multi;
 	char name[31];
 	unsigned long minscore;
 	char fname[FILENAME_MAX + 1];
-} rules;
+} constrnts;
 
-struct rawdata 
+struct gameInfo 
 {
-	char *bulk;
+	uint8_t lvl;
+	uint32_t points;
+	uint32_t numofwrds;
+	float typoratio;
+	float game_cps;
+	float game_tcps;
+	clock_t duration;
+	float topspd;
+	unsigned int sinit;
+	char name[21];
+} curr_stat;
+
+struct dictionary 
+{
+	char *rawwords;
 	char **word;
 	size_t n;
 	size_t max;
-} words;
+} wrds;
 
 struct scores 
 {
 	char name[ALIASLEN];
-	int score;
+	int points;
 };
 
-struct PACKET 
+struct cmdmsg 
 {
-	char option[OPTLEN]; // instruction
-	char alias[ALIASLEN]; // client's alias
+	char infoion[infoLEN]; // instruction
+	char plyname[ALIASLEN]; // client's plyname
 	char buff[BUFFSIZE]; // payload
 };
 
-struct THREADINFO 
+struct tInfo 
 {
-	pthread_t thread_ID; // thread's pointer
+	pthread_t tid; // thread's pointer
 	int sockfd; // socket file descriptor
-	char alias[ALIASLEN]; // client's alias
+	char plyname[ALIASLEN]; // client's plyname
 };
 
-struct USER 
+struct listnode 
 {
-	int sockfd; // user's socket descriptor
-	char alias[ALIASLEN]; // user's name
+	struct tInfo threadinfo;
+	struct listnode *next;
 };
 
-struct LLNODE 
+struct list 
 {
-	struct THREADINFO threadinfo;
-	struct LLNODE *next;
-};
-
-struct LLIST 
-{
-	struct LLNODE *head, *tail;
+	struct listnode *head, *tail;
 	int size;
 };
 
@@ -93,23 +85,23 @@ struct LLIST
 extern int SERV, CLIENT;
 extern int	 wordcount;
 extern int  graph;
-extern int  wordpos[22];
+extern int  position_word[22];
 extern float rate;
-extern char worddir[MAXPATHLEN];
-extern char wordstring[22][20];
+extern char dictdirectory[MAXPATHLEN];
+extern char strings_word[22][20];
 extern int scoreReceive;
 extern int isconnected, aliaslen;
 extern int ply;
-extern char option[LINEBUFF];
+extern char infoion[LINEBUFF];
 extern struct scores final[MAXCLIENTS+1];
-extern int escend;
+extern int escpe;
 extern int timerval;
 extern int DEFAULT_PORT;
 extern int CLIENTS;
 
-int sockfd, newfd;
-struct THREADINFO thread_info[MAXCLIENTS];
-struct LLIST client_list;
-pthread_mutex_t clientlist_mutex;
+int sockfd, fd_client;
+struct tInfo thread_info[MAXCLIENTS];
+struct list info_clients;
+pthread_mutex_t mutex_clients;
 
 #endif

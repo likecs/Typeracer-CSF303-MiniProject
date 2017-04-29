@@ -30,10 +30,10 @@ trie newNode()
 	return go;
 }
 
-void insert(trie root, const char *s) 
+void insert(trie strt, const char *s) 
 {
 	int len = strlen(s), i, idx;
-	trie go = root;
+	trie go = strt;
 	for(i = 0; i < len; ++i) 
 	{
 		idx = s[i] - 'a';
@@ -46,10 +46,10 @@ void insert(trie root, const char *s)
 	go->leaf = true;
 }
 
-bool search(trie root, const char *s) 
+bool search(trie strt, const char *s) 
 {
 	int len = strlen(s), i, idx;
-	trie go = root;
+	trie go = strt;
 	for(i = 0; i < len; ++i) 
 	{
 		idx = s[i] - 'a';
@@ -65,14 +65,14 @@ bool search(trie root, const char *s)
 void initaliseTrie(char *filename)
 {
 	FILE *fp = fopen(filename, "r");
-	trie root = newNode();
+	trie strt = newNode();
 	//ignore name of files
 	fscanf(fp, "%s", data[0]);
 	fscanf(fp, "%s", data[0]);
 	for(int i = 0; i < MAX; ++i) 
 	{
 		fscanf(fp, "%s", data[i]);
-		insert(root, data[i]);
+		insert(strt, data[i]);
 	}
 	fclose(fp);
 }

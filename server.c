@@ -12,35 +12,35 @@ void startserver(void)
 	switch(k) 
 	{
 		case 1:
-			loadwords("dictionaries/words.csharp");
+			filltrie("dictionaries/words.csharp");
 			break;
 		case 2:
-			loadwords("dictionaries/words.eng");
+			filltrie("dictionaries/words.eng");
 			break;
 		case 3:
-			loadwords("dictionaries/words.fra");
+			filltrie("dictionaries/words.fra");
 			break;
 		case 4:
-			loadwords("dictionaries/words.dos");
+			filltrie("dictionaries/words.dos");
 			break;
 		case 5:
-			loadwords("dictionaries/words.prog");
+			filltrie("dictionaries/words.prog");
 			break;
 		case 6:
-			loadwords("dictionaries/words.unix");
+			filltrie("dictionaries/words.unix");
 			break;
 	}
 	char *mp[6] = {"Csharp", "English", "French", "DOS", "Programming", "Unix"};
 	clear();
-	mvprintw(2, 5, _("Server is up and running on PORT %d..."), opt.port);
+	mvprintw(2, 5, _("Server is up and running on PORT %d..."), info.port);
 	mvaddstr(3, 5, _("Available Interfaces..."));
 	showInterfaces();
 	mvprintw(8, 5, _("Chosen Dictionary: %s"), mp[k-1]);
 	writeServerLog(mp[k-1]);
 	refresh();
-	initserver();
+	initializeServ();
 	sendStart();
-	play();
+	maingameLogic();
 	return;
 }
 
@@ -80,219 +80,217 @@ void showInterfaces()
 	freeifaddrs(ifaddr);
 }
 
-void initserver()
+void initializeServ()
 {
-	int err_ret, sin_size;
+	int errorVal, sizesin;
 	struct sockaddr_in serv_addr, client_addr;
-	pthread_t interrupt;
-	/* initialize linked list */
-	list_init(&client_list);
-	/* initiate mutex */
-	pthread_mutex_init(&clientlist_mutex, NULL);
-	/* open a socket */
+	 
+	initList(&info_clients);
+	 
+	pthread_mutex_init(&mutex_clients, NULL);
+	 
 	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) 
 	{
-		err_ret = errno;
-		return err_ret;
+		errorVal = errno;
+		return errorVal;
 	}
-	/*socket reuse problems*/
+	 
     if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &(int){ 1 }, sizeof(int)) < 0)
     {
     	writeServerLog("Error in SO_REUSEADDR");
-    	err_ret=errno;
-    	return err_ret;
+    	errorVal=errno;
+    	return errorVal;
 	}
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEPORT, &(int){ 1 }, sizeof(int)) < 0)
 	{
     	writeServerLog("Error in SO_REUSEADDR");
-    	err_ret=errno;
-    	return err_ret;
+    	errorVal=errno;
+    	return errorVal;
 	}
-	/* set initial values */
+	 
 	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(opt.port);
+	serv_addr.sin_port = htons(info.port);
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	memset(&(serv_addr.sin_zero), 0, 8);
-	/* bind address with socket */
+	 
 	if(bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(struct sockaddr)) == -1) 
 	{
-		err_ret = errno;
+		errorVal = errno;
 		writeServerLog("Error in binding");
-		return err_ret;
+		return errorVal;
 	}
-	/* start listening for connection */
+	 
 	if(listen(sockfd, BACKLOG) == -1) 
 	{
-		err_ret = errno;
+		errorVal = errno;
 		writeServerLog("Error in listening");
-		return err_ret;
+		return errorVal;
 	}
-	/* keep accepting connections */
+	 
 	while(1) 
 	{
-		sin_size = sizeof(struct sockaddr_in);
-		if((newfd = accept(sockfd, (struct sockaddr *)&client_addr, (socklen_t*)&sin_size)) == -1) 
+		sizesin = sizeof(struct sockaddr_in);
+		if((fd_client = accept(sockfd, (struct sockaddr *)&client_addr, (socklen_t*)&sizesin)) == -1) 
 		{
-			err_ret = errno;
+			errorVal = errno;
 			writeServerLog("Error in accepting connections");
-			return err_ret;
+			return errorVal;
 		}
 		else 
 		{
-			struct THREADINFO threadinfo;
-			threadinfo.sockfd = newfd;
-			strcpy(threadinfo.alias, "Anonymous");
-			pthread_mutex_lock(&clientlist_mutex);
-			list_insert(&client_list, &threadinfo);
-			pthread_mutex_unlock(&clientlist_mutex);
-			pthread_create(&threadinfo.thread_ID, NULL, client_handler, (void *)&threadinfo);
-			if(client_list.size == CLIENTS) 
+			struct tInfo threadinfo;
+			threadinfo.sockfd = fd_client;
+			pthread_mutex_lock(&mutex_clients);
+			insertList(&info_clients, &threadinfo);
+			pthread_mutex_unlock(&mutex_clients);
+			pthread_create(&threadinfo.tid, NULL, clientThread, (void *)&threadinfo);
+			if(info_clients.size == CLIENTS) 
 			{
 				break;
 			}
 		}
 	}
 	writeServerLog("Requried Clients Connected");
-	mvprintw(11, 5, _("Players Connected: %d / %d\t\t\t\t"),client_list.size, CLIENTS);
+	mvprintw(11, 5, _("Players Connected: %d / %d\t\t\t\t"),info_clients.size, CLIENTS);
 	pressanykey(12,5);
 }
 
-void *client_handler(void *fd) 
+void *clientThread(void *fd) 
 {
-	struct THREADINFO threadinfo = *(struct THREADINFO *)fd;
-	struct PACKET packet;
-	struct LLNODE *curr;
+	struct tInfo threadinfo = *(struct tInfo *)fd;
+	struct cmdmsg packet;
+	struct listnode *curr;
 	int bytes, sent;
 	while(1) 
 	{
-		bytes = recv(threadinfo.sockfd, (void *)&packet, sizeof(struct PACKET), 0);
+		bytes = recv(threadinfo.sockfd, (void *)&packet, sizeof(struct cmdmsg), 0);
 		if(!bytes) 
 		{
 			writeServerLog("Client Disconnected");
-			pthread_mutex_lock(&clientlist_mutex);
-			list_delete(&client_list, &threadinfo);
-			pthread_mutex_unlock(&clientlist_mutex);
+			pthread_mutex_lock(&mutex_clients);
+			deleteList(&info_clients, &threadinfo);
+			pthread_mutex_unlock(&mutex_clients);
 			break;
 		}
-		if(!strcmp(packet.alias, "CLIENTFOUND"))
+		if(!strcmp(packet.plyname, "CLIENTFOUND"))
 		{
 			sendFoundWords_server(packet.buff);
 			clearFoundWord(packet.buff);
 		}
-		else if(!strcmp(packet.option, "SCORES"))
+		else if(!strcmp(packet.infoion, "SCORES"))
 		{
 			memset(&final[scoreReceive], 0, sizeof(struct scores));
-			strcpy(final[scoreReceive].name, packet.alias);
-			final[scoreReceive].score = atoi(packet.buff);
+			strcpy(final[scoreReceive].name, packet.plyname);
+			final[scoreReceive].points = atoi(packet.buff);
 			scoreReceive++;
-			pthread_mutex_lock(&clientlist_mutex);
-			for(curr = client_list.head; curr != NULL; curr = curr->next) 
+			pthread_mutex_lock(&mutex_clients);
+			for(curr = info_clients.head; curr != NULL; curr = curr->next) 
 			{
-				struct PACKET spacket;
-				memset(&spacket, 0, sizeof(struct PACKET));
+				struct cmdmsg spacket;
+				memset(&spacket, 0, sizeof(struct cmdmsg));
 				if(!compare(&curr->threadinfo, &threadinfo))
 				{
 					continue;
 				}
-				strcpy(spacket.option, "SCORES");
-				strcpy(spacket.alias, packet.alias);
+				strcpy(spacket.infoion, "SCORES");
+				strcpy(spacket.plyname, packet.plyname);
 				strcpy(spacket.buff, packet.buff);
-				sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct PACKET), 0);
+				sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct cmdmsg), 0);
 			}
-			pthread_mutex_unlock(&clientlist_mutex);
+			pthread_mutex_unlock(&mutex_clients);
 		}
 	}
-	/* clean up */
+	 
 	close(threadinfo.sockfd);
 	return NULL;
 }
 
 void sendStart()
 {
-	struct PACKET packet;
-	struct LLNODE *curr;
+	struct cmdmsg packet;
+	struct listnode *curr;
 	int bytes, sent;
 
 	writeServerLog("Sending Game Start commands");
-	pthread_mutex_lock(&clientlist_mutex);
-	for(curr = client_list.head; curr != NULL; curr = curr->next) 
+	pthread_mutex_lock(&mutex_clients);
+	for(curr = info_clients.head; curr != NULL; curr = curr->next) 
 	{
-		struct PACKET spacket;
-		memset(&spacket, 0, sizeof(struct PACKET));
-		sprintf(spacket.option, "%d", timerval);
-		// strcpy(spacket.option, "msg");
-		strcpy(spacket.alias, "SERVER");
+		struct cmdmsg spacket;
+		memset(&spacket, 0, sizeof(struct cmdmsg));
+		sprintf(spacket.infoion, "%d", timerval);
+		 
+		strcpy(spacket.plyname, "SERVER");
 		strcpy(spacket.buff, "START");
-		sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct PACKET), 0);
+		sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct cmdmsg), 0);
 	}
-	pthread_mutex_unlock(&clientlist_mutex);
+	pthread_mutex_unlock(&mutex_clients);
 	writeServerLog("Game Start commands sent");
 }
 
 void sendGameOver()
 {
-	struct PACKET packet;
-	struct LLNODE *curr;
+	struct cmdmsg packet;
+	struct listnode *curr;
 	int bytes, sent;
-	pthread_mutex_lock(&clientlist_mutex);
-	for(curr = client_list.head; curr != NULL; curr = curr->next) 
+	pthread_mutex_lock(&mutex_clients);
+	for(curr = info_clients.head; curr != NULL; curr = curr->next) 
 	{
-		struct PACKET spacket;
-		memset(&spacket, 0, sizeof(struct PACKET));
-		strcpy(spacket.option, "msg");
-		strcpy(spacket.alias, "SERVER");
+		struct cmdmsg spacket;
+		memset(&spacket, 0, sizeof(struct cmdmsg));
+		strcpy(spacket.infoion, "msg");
+		strcpy(spacket.plyname, "SERVER");
 		strcpy(spacket.buff, "GAME OVER!");
-		sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct PACKET), 0);
+		sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct cmdmsg), 0);
 	}
-	pthread_mutex_unlock(&clientlist_mutex);
+	pthread_mutex_unlock(&mutex_clients);
 }
 
 void sendWords(int slot, char newword[] )
 {
-	struct PACKET packet;
-	struct LLNODE *curr;
-	char buf[BUFFSIZE];
-	snprintf(buf, sizeof(buf), "%d", slot);
+	struct cmdmsg packet;
+	struct listnode *curr;
+	char bffr[BUFFSIZE];
+	snprintf(bffr, sizeof(bffr), "%d", slot);
 	int bytes, sent;
-	pthread_mutex_lock(&clientlist_mutex);
-	for(curr = client_list.head; curr != NULL; curr = curr->next) 
+	pthread_mutex_lock(&mutex_clients);
+	for(curr = info_clients.head; curr != NULL; curr = curr->next) 
 	{
-		struct PACKET spacket;
-		memset(&spacket, 0, sizeof(struct PACKET));
-		strcpy(spacket.option, buf);
-		strcpy(spacket.alias, "SERVWORDS");
+		struct cmdmsg spacket;
+		memset(&spacket, 0, sizeof(struct cmdmsg));
+		strcpy(spacket.infoion, bffr);
+		strcpy(spacket.plyname, "SERVWORDS");
 		strcpy(spacket.buff, newword);
-		sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct PACKET), 0);
+		sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct cmdmsg), 0);
 	}
-	pthread_mutex_unlock(&clientlist_mutex);
+	pthread_mutex_unlock(&mutex_clients);
 }
 
 void sendFoundWords_server(char newword[])
 {
-	struct PACKET packet;
-	struct LLNODE *curr;
+	struct cmdmsg packet;
+	struct listnode *curr;
 	int bytes, sent;
-	pthread_mutex_lock(&clientlist_mutex);
-	for(curr = client_list.head; curr != NULL; curr = curr->next) 
+	pthread_mutex_lock(&mutex_clients);
+	for(curr = info_clients.head; curr != NULL; curr = curr->next) 
 	{
-		struct PACKET spacket;
-		memset(&spacket, 0, sizeof(struct PACKET));
-		strcpy(spacket.alias, "SERVFOUND");
+		struct cmdmsg spacket;
+		memset(&spacket, 0, sizeof(struct cmdmsg));
+		strcpy(spacket.plyname, "SERVFOUND");
 		strcpy(spacket.buff, newword);
-		sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct PACKET), 0);
+		sent = send(curr->threadinfo.sockfd, (void *)&spacket, sizeof(struct cmdmsg), 0);
 	}
-	pthread_mutex_unlock(&clientlist_mutex);
+	pthread_mutex_unlock(&mutex_clients);
 }
 
 
 
 void closeAllSockets()
 {
-	struct LLNODE *curr;
-	pthread_mutex_lock(&clientlist_mutex);
-	for(curr = client_list.head; curr != NULL; curr = curr->next) 
+	struct listnode *curr;
+	pthread_mutex_lock(&mutex_clients);
+	for(curr = info_clients.head; curr != NULL; curr = curr->next) 
 	{
 		close(curr->threadinfo.sockfd);
 	}
-	pthread_mutex_unlock(&clientlist_mutex);
+	pthread_mutex_unlock(&mutex_clients);
 }

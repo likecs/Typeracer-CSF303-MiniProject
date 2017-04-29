@@ -5,12 +5,12 @@
 
 #endif
 
-int addnewword(void);
-void clearword(int y, int x, size_t length);
-static void cwords(void);
-static void movewords(void);
-static void parseinput(int *escend, char *input, clock_t *starttime, unsigned *inputpos, int *nappaykset, int *wrngret);
-int play(void);
-void freewords(void);
-int loadwords(char *filename);
-int cmpfunc(const void * a, const void * b);
+int insertword(void);
+void deleteword(int y, int x, size_t length);
+static void checkWords(void);
+static void word_animate(void);
+static void checkInput(int *escpe, char *input, clock_t *stime, unsigned *char_position, int *wordset, int *wrongwrds);
+int maingameLogic(void);
+void cleartrie(void);
+int filltrie(char *filename);
+int comp_function(const void * a, const void * b);

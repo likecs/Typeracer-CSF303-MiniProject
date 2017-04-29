@@ -6,14 +6,14 @@ void getName()
 	mvaddstr( 3, 30, "TypeRacer v1.0 ");
 	mvaddstr( 5, 30, _("Enter Player Name: "));
 	mvaddstr(5, 30, _("Enter Player Name: "));
-	getInput(5, 31 + strlen(_("Enter Player Name: ")), opt.name, sizeof(opt.name) - 1);
-	opt.name[sizeof(opt.name) - 1] = '\0';
+	getInput(5, 31 + strlen(_("Enter Player Name: ")), info.name, sizeof(info.name) - 1);
+	info.name[sizeof(info.name) - 1] = '\0';
 	writeServerLog("Welcome ");
-	writeServerLog(opt.name);
+	writeServerLog(info.name);
 
 }
 
-void drawmenu(void)
+void menu_create(void)
 {
 	clear();
 	mvaddstr( 3, 30, "TypeRacer v1.0 ");
@@ -23,31 +23,31 @@ void drawmenu(void)
 	mvaddstr(13, 30, _("Choose: "));
 }
 
-void drawscreen(void)
+void screen_create(void)
 {
 	clear();
 	move(22, 0);
 	hline(ACS_HLINE, 80);
 	mvaddch(23, 1, '>');
 	mvaddch(23, 21, '<');
-	drawstatus(0);
-	mvaddstr(23, 38, _("Score:"));
-	mvaddstr(23, 49, _("tCPS:"));
-	mvaddstr(23, 60, _("cCPS:"));
+	status_create(0);
+	mvaddstr(23, 38, _("points:"));
 	mvaddstr(23, 72, _("TIME:"));
+	mvaddstr(23, 60, _("cCPS:"));
+	mvaddstr(23, 49, _("tCPS:"));
 }
 
-void drawstatus(unsigned inputpos)
+void status_create(unsigned char_position)
 {
-	mvprintw(23, 45, "%d", now.score);
-	mvprintw(23, 55, "%2.2f", now.totalspeed);
-	mvprintw(23, 66, "%2.2f", now.speed);
+	mvprintw(23, 45, "%d", curr_stat.points);
+	mvprintw(23, 55, "%2.2f", curr_stat.game_tcps);
+	mvprintw(23, 66, "%2.2f", curr_stat.game_cps);
 	mvprintw(23, 77, "%d ", timerval);
-	move(23, 2 + inputpos);
-	move(23, 2 + inputpos);
+	move(23, 2 + char_position);
+	move(23, 2 + char_position);
 }
 
-void endcursestuff(void)
+void end_curses(void)
 {
 	if (!graph)
 	{
@@ -59,7 +59,7 @@ void endcursestuff(void)
 	graph = 0;
 }
 
-void initcursestuff(void)
+void initialize_curses(void)
 {
 	if (graph)
 	{
@@ -83,7 +83,7 @@ int chooseSettings(void)
 	char cli[6];
 	char port[6];
 	char timer[6];
-	opt.port = DEFAULT_PORT;
+	info.port = DEFAULT_PORT;
 	exitnow = 0;
 	cli[0] = '3';
 	cli[1] = '\0';
@@ -118,10 +118,10 @@ int chooseSettings(void)
 				mvprintw(11, 30, _("Enter Port: %s"), port);
 				getInput(11, 31 + strlen(_("Enter Port:")), port, sizeof(port) - 1);
 				port[sizeof(port) - 1] = '\0';
-				opt.port = strtol(port, NULL, 10);
-				if (opt.port <= 1024)
+				info.port = strtol(port, NULL, 10);
+				if (info.port <= 1024)
 				{
-					opt.port = DEFAULT_PORT;
+					info.port = DEFAULT_PORT;
 					strcpy(port, defport);
 				}
 				exitnow = 0;

@@ -7,11 +7,11 @@
 
 
 void getName();
-void drawmenu(void);
-void drawscreen(void);
-void drawstatus(unsigned inputpos);
-void endcursestuff(void);
-void initcursestuff(void);
+void menu_create(void);
+void screen_create(void);
+void status_create(unsigned char_position);
+void end_curses(void);
+void initialize_curses(void);
 int chooseSettings(void);
 int choosewordfile(void);
 int fileselmenu(void);

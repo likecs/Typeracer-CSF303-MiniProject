@@ -1,70 +1,41 @@
 
-2017-04-29 00:56:44
+2017-04-29 22:53:26
 
 Welcome to TypeRacer v1.0
 Welcome 
-p2
+shuba
+Server infoion selected
+Choose Dictonary: 
+All interfaces displayed
+English
+
+2017-04-29 22:54:04
+
+Welcome to TypeRacer v1.0
+Welcome 
+sadfr
+Requried Clients Connected
+Sending Game Start commands
+Game Start commands sent
+Game Started!!
 Closing TypeRacer
 
-2017-04-29 01:28:18
+2017-04-29 22:56:40
 
 Welcome to TypeRacer v1.0
 Welcome 
-p1
-Closing TypeRacer
-
-2017-04-29 01:34:02
-
-Welcome to TypeRacer v1.0
-Welcome 
-2
-Closing TypeRacer
-
-2017-04-29 01:34:10
-
-Welcome to TypeRacer v1.0
-Welcome 
-p1
-Closing TypeRacer
-
-2017-04-29 01:37:19
-
-Welcome to TypeRacer v1.0
-Welcome 
-P2
-Server Option selected
+pleasechal
+Server infoion selected
 Choose Dictonary: 
 Dictonary Loaded
 All interfaces displayed
 English
 
-2017-04-29 01:39:19
+2017-04-29 22:56:56
 
 Welcome to TypeRacer v1.0
 Welcome 
-p1
-Server Option selected
-Choose Dictonary: 
-Dictonary Loaded
-All interfaces displayed
-English
-
-2017-04-29 01:39:59
-
-Welcome to TypeRacer v1.0
-Welcome 
-p1
-
-2017-04-29 01:41:35
-
-Welcome to TypeRacer v1.0
-Welcome 
-p1
-Server Option selected
-Choose Dictonary: 
-Dictonary Loaded
-All interfaces displayed
-English
+hahayes
 Requried Clients Connected
 Sending Game Start commands
 Game Start commands sent
@@ -72,6 +43,35 @@ Game Started!!
 GAME OVER!
 All scores sent to all clients
 Scoreboard Displayed
+Closing TypeRacer
+Client Disconnected
+Reached Main Menu
+Closing TypeRacer
+
+2017-04-29 23:21:01
+
+Welcome to TypeRacer v1.0
+Welcome 
+p1
+Server infoion selected
+Choose Dictonary: 
+Dictonary Loaded
+All interfaces displayed
+English
+
+2017-04-29 23:21:21
+
+Welcome to TypeRacer v1.0
+Welcome 
+p2
+Requried Clients Connected
+Sending Game Start commands
+Game Start commands sent
+Game Started!!
+GAME OVER!
+All scores sent to all clients
+Scoreboard Displayed
+Closing TypeRacer
 Client Disconnected
 Reached Main Menu
 Closing TypeRacer

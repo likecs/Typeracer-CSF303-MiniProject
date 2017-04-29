@@ -110,7 +110,7 @@ getdirentries
 getenv
 getgrent
 getlogin
-getopt
+getinfo
 getpass
 getpw
 getpwent

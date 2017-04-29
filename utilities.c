@@ -2,25 +2,23 @@
 
 void initializeRules(void)
 {
-	rules.label = 1;
-	rules.minwords = 1;
-	rules.maxwords = 22;
-	rules.minscore = 0;
-	rules.minspeed = 3;
-	rules.maxspeed = 0;
-	rules.step = 150;
-	rules.smooth = 1;
-	my_strncpy(rules.fname, "default", sizeof(rules.fname) - 1);
-	my_strncpy(rules.name, _("default"), sizeof(rules.name) - 1);
+	constrnts.mnwrds = 1;
+	constrnts.mxwrds = 22;
+	constrnts.minscore = 0;
+	constrnts.mnspeed = 3;
+	constrnts.mxspeed = 0;
+	constrnts.smooth = 1;
+	constrnts.step = 150;
+	constrnts.label = 1;
 }
 
-int get_random(int range)
+int get_random(int rng)
 {
-	if (range < 1)
+	if (rng < 1)
 	{
 		return 0;
 	}
-	return (int)(random() % range);
+	return (int)(random() % rng);
 }
 
 void my_strncpy(char *dst, char *src, size_t n)
@@ -29,48 +27,48 @@ void my_strncpy(char *dst, char *src, size_t n)
 	dst[n] = '\0';
 }
 
-clock_t timenow(void)
+clock_t currTime(void)
 {
 	struct timeval tval;
 	gettimeofday(&tval, NULL);
 	return ((clock_t)((tval.tv_sec * 100) + (tval.tv_usec / 10000)));
 }
 
-void getInput(int y, int x, char *buf, int maxlen)
+void getInput(int y, int x, char *bffr, int maxlen)
 {
-	int ch, curlen;
-	curlen = 0;
-	memset(buf, 0, maxlen + 1);
-	for (ch = 0; ch != 10;) 
+	int chr, currlength;
+	currlength = 0;
+	memset(bffr, 0, maxlen + 1);
+	for (chr = 0; chr != 10;) 
 	{
-		mvaddstr(y, x + curlen, "                    ");
+		mvaddstr(y, x + currlength, "                    ");
 		move(y, x);
-		if (curlen)
+		if (currlength)
 		{
-			addstr(buf);
+			addstr(bffr);
 		}
 		refresh();
-		switch (ch = getch()) 
+		switch (chr = getch()) 
 		{
-			case KEY_BACKSPACE:
-			case 4:		/* EOT */
-			case 8:		/* BS */
-			case 127:	/* DEL */
-				if (curlen) 
-				{
-					echochar(ch);
-					curlen--;
-					buf[curlen] = '\0';
-				}
-				break;
 			case 10:
 				break;
-			case 27:	/* ESC */
+			case 27:
 				flushinp();
 				break;
+			case 4:	
+			case 8:	
+			case KEY_BACKSPACE:
+			case 127:
+				if (currlength) 
+				{
+					currlength--;
+					echochar(chr);
+					bffr[currlength] = '\0';
+				}
+				break;
 			default:
-				if (curlen != maxlen && !iscntrl(ch))
-					buf[curlen++] = ch;
+				if (currlength != maxlen && !iscntrl(chr))
+					bffr[currlength++] = chr;
 				break;
 		}
 	}
@@ -79,69 +77,69 @@ void getInput(int y, int x, char *buf, int maxlen)
 
 
 
-int compare(struct THREADINFO *a, struct THREADINFO *b) 
+int compare(struct tInfo *ainf, struct tInfo *binf) 
 {
-	return a->sockfd - b->sockfd;
+	return ainf->sockfd - binf->sockfd;
 }
 
-void list_init(struct LLIST *root) 
+void initList(struct list *strt) 
 {
-	root->head = root->tail = NULL;
-	root->size = 0;
+	strt->head = strt->tail = NULL;
+	strt->size = 0;
 }
 
-int list_insert(struct LLIST *root, struct THREADINFO *thr_info) 
+int insertList(struct list *strt, struct tInfo *thr_info) 
 {
-	if(root->size == CLIENTS) 
+	if(strt->size == CLIENTS) 
 	{
 		return -1;
 	}
-	if(root->head == NULL) 
+	if(strt->head == NULL) 
 	{
-		root->head = (struct LLNODE *)malloc(sizeof(struct LLNODE));
-		root->head->threadinfo = *thr_info;
-		root->head->next = NULL;
-		root->tail = root->head;
+		strt->head = (struct listnode *)malloc(sizeof(struct listnode));
+		strt->head->threadinfo = *thr_info;
+		strt->head->next = NULL;
+		strt->tail = strt->head;
 	}
 	else 
 	{
-		root->tail->next = (struct LLNODE *)malloc(sizeof(struct LLNODE));
-		root->tail->next->threadinfo = *thr_info;
-		root->tail->next->next = NULL;
-		root->tail = root->tail->next;
+		strt->tail->next = (struct listnode *)malloc(sizeof(struct listnode));
+		strt->tail->next->threadinfo = *thr_info;
+		strt->tail->next->next = NULL;
+		strt->tail = strt->tail->next;
 	}
-	root->size++;
+	strt->size++;
 	return 0;
 }
 
-int list_delete(struct LLIST *root, struct THREADINFO *thr_info) 
+int deleteList(struct list *strt, struct tInfo *thr_info) 
 {
-	struct LLNODE *curr, *temp;
-	if(root->head == NULL) 
+	struct listnode *curr, *temp;
+	if(strt->head == NULL) 
 	{
 		return -1;
 	}
-	if(compare(thr_info, &root->head->threadinfo) == 0) 
+	if(compare(thr_info, &strt->head->threadinfo) == 0) 
 	{
-		temp = root->head;
-		root->head = root->head->next;
-		if(root->head == NULL) root->tail = root->head;
+		temp = strt->head;
+		strt->head = strt->head->next;
+		if(strt->head == NULL) strt->tail = strt->head;
 		free(temp);
-		root->size--;
+		strt->size--;
 		return 0;
 	}
-	for(curr = root->head; curr->next != NULL; curr = curr->next) 
+	for(curr = strt->head; curr->next != NULL; curr = curr->next) 
 	{
 		if(compare(thr_info, &curr->next->threadinfo) == 0) 
 		{
 			temp = curr->next;
-			if(temp == root->tail) 
+			if(temp == strt->tail) 
 			{
-				root->tail = curr;
+				strt->tail = curr;
 			}
 			curr->next = curr->next->next;
 			free(temp);
-			root->size--;
+			strt->size--;
 			return 0;
 		}
 	}

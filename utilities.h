@@ -8,9 +8,9 @@
 void initializeRules(void);
 int get_random(int range);
 void my_strncpy(char *dst, char *src, size_t n);
-clock_t timenow(void);
-void getInput(int y, int x, char *buf, int maxlen);
-int compare(struct THREADINFO *a, struct THREADINFO *b); 
-void list_init(struct LLIST *ll);
-int list_insert(struct LLIST *ll, struct THREADINFO *thr_info);
-int list_delete(struct LLIST *ll, struct THREADINFO *thr_info);
+clock_t currTime(void);
+void getInput(int y, int x, char *bffr, int maxlen);
+int compare(struct tInfo *a, struct tInfo *b); 
+void initList(struct list *ll);
+int insertList(struct list *ll, struct tInfo *thr_info);
+int deleteList(struct list *ll, struct tInfo *thr_info);

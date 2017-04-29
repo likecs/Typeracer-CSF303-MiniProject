@@ -3,26 +3,26 @@
 void sendFoundWords_client(char *newword)
 {
 	int sent;
-	struct PACKET packet;
-	memset(&packet, 0, sizeof(struct PACKET));
-	strcpy(packet.alias, "CLIENTFOUND");
+	struct cmdmsg packet;
+	memset(&packet, 0, sizeof(struct cmdmsg));
+	strcpy(packet.plyname, "CLIENTFOUND");
 	strcpy(packet.buff, newword);
-	/* send request to close this connetion */
-	if(escend!=2)
-	sent = send(sockfd, (void *)&packet, sizeof(struct PACKET), 0);
+
+	if(escpe!=2)
+	sent = send(sockfd, (void *)&packet, sizeof(struct cmdmsg), 0);
 }
 
 int receiveWords()
 {
 	int bytes;
-	struct PACKET packet;
+	struct cmdmsg packet;
 	int i;
 	while(1)
 	{
-		bytes = recv(sockfd, (void *)&packet, sizeof(struct PACKET), 0);
+		bytes = recv(sockfd, (void *)&packet, sizeof(struct cmdmsg), 0);
 		if (bytes < 1)
 		{
-			escend = 2;
+			escpe = 2;
 			isconnected = 0;
 			writeClientLog("Server diconnected");
 			return 0;
@@ -30,31 +30,31 @@ int receiveWords()
 		if(!strcmp(packet.buff,"START"))
 		{   
 			ply = 1;
-			timerval = atoi(packet.option);
+			timerval = atoi(packet.infoion);
 			return 1;
 		}
-		else if(!strcmp(packet.alias, "SERVFOUND") && CLIENT)
+		else if(!strcmp(packet.plyname, "SERVFOUND") && CLIENT)
 		{
 			clearFoundWord(packet.buff);
 			return 2;
 		}
-		else if(!strcmp(packet.alias,"SERVWORDS"))
+		else if(!strcmp(packet.plyname,"SERVWORDS"))
 		{
-			int slot = atoi(packet.option);
-			my_strncpy(wordstring[slot], packet.buff, sizeof(wordstring[slot]) - 1);
-			wordpos[slot] = -1;
+			int slot = atoi(packet.infoion);
+			my_strncpy(strings_word[slot], packet.buff, sizeof(strings_word[slot]) - 1);
+			position_word[slot] = -1;
 			return 3;
 		}
 		else if(!strcmp(packet.buff, "GAME OVER!"))
 		{
-			escend = 1;
+			escpe = 1;
 			return 4;
 		}
-		else if(!strcmp(packet.option, "SCORES"))
+		else if(!strcmp(packet.infoion, "SCORES"))
 		{
 			memset(&final[scoreReceive], 0, sizeof(struct scores));
-			strcpy(final[scoreReceive].name, packet.alias);
-			final[scoreReceive].score = atoi(packet.buff);
+			strcpy(final[scoreReceive].name, packet.plyname);
+			final[scoreReceive].points = atoi(packet.buff);
 			scoreReceive++;
 		}
 	}
@@ -66,14 +66,14 @@ void clearFoundWord(char *input)
 	int foundword = 0,i;
 	for (i = 0; i < 22; i++) 
 	{
-		if (strcmp(input, wordstring[i]))
+		if (strcmp(input, strings_word[i]))
 		{
 			continue;
 		}
 		foundword = 1;
-		clearword(i, wordpos[i], strlen(wordstring[i]));
-		wordpos[i] = -2;
-		my_strncpy(wordstring[i], " ", sizeof(wordstring[i]) - 1);
+		deleteword(i, position_word[i], strlen(strings_word[i]));
+		position_word[i] = -2;
+		my_strncpy(strings_word[i], " ", sizeof(strings_word[i]) - 1);
 	}
 	input[0] = '\0';
 }
@@ -81,7 +81,7 @@ void clearFoundWord(char *input)
 void *receiver(void *param) 
 {
 	int recvd;
-	struct PACKET packet;
+	struct cmdmsg packet;
 	while(!isconnected)
 		;
 	while(isconnected) 
@@ -91,40 +91,40 @@ void *receiver(void *param)
 	return NULL;
 }
 
-char serv[MAXHOSTNAMELEN];
+char serveraddr[MAXHOSTNAMELEN];
 
 void startclient()
 {
 	int exitnow;
 	char port[6];
-	opt.port = DEFAULT_PORT;
+	info.port = DEFAULT_PORT;
 	exitnow = 0;
-	serv[0] = '\0';
-	strcpy(serv , DEFAULT_IP);
+	serveraddr[0] = '\0';
+	strcpy(serveraddr , DEFAULT_IP);
 	strcpy(port ,"2048");
 	do 
 	{
 		clear();
-		mvprintw( 6, 30, _("1. Host: %s"), serv);
+		mvprintw( 6, 30, _("1. Host: %s"), serveraddr);
 		mvprintw( 7, 30, _("2. Port: %s"), port);
 		mvaddstr( 8, 30, _("3. Connect "));
 		mvaddstr(11, 30, _("Choose: "));
 		switch (getch()) 
 		{
 			case '1':
-				mvprintw(11, 30, _("Enter Host: %s"), serv);
-				getInput(11, 31 + strlen(_("Enter Host:")), serv, sizeof(serv) - 1);
-				serv[sizeof(serv) - 1] = '\0';
+				mvprintw(11, 30, _("Enter Host: %s"), serveraddr);
+				getInput(11, 31 + strlen(_("Enter Host:")), serveraddr, sizeof(serveraddr) - 1);
+				serveraddr[sizeof(serveraddr) - 1] = '\0';
 				exitnow = 0;
 				break;
 			case '2':
 				mvprintw(11, 30, _("Enter Port: %s"), port);
 				getInput(11, 31 + strlen(_("Enter Port:")), port, sizeof(port) - 1);
 				port[sizeof(port) - 1] = '\0';
-				opt.port = strtol(port, NULL, 10);
-				if (opt.port <= 1024)
+				info.port = strtol(port, NULL, 10);
+				if (info.port <= 1024)
 				{
-					opt.port = DEFAULT_PORT;
+					info.port = DEFAULT_PORT;
 				}
 				exitnow = 0;
 				break;
@@ -137,51 +137,51 @@ void startclient()
 
 	writeClientLog("Client started");
 	writeClientLog("Host chosen: ");
-	writeClientLog(serv);
+	writeClientLog(serveraddr);
 	writeClientLog("Port chosen: ");
 	writeClientLog(port);
 
 	clear();
-	mvprintw( 5, 30, _("Name: %s"),opt.name);
-	mvprintw( 6, 30, _("Host: %s"),serv);
-	mvprintw( 7, 30, _("Port: %d"),opt.port);
+	mvprintw( 5, 30, _("Name: %s"),info.name);
+	mvprintw( 6, 30, _("Host: %s"),serveraddr);
+	mvprintw( 7, 30, _("Port: %d"),info.port);
 	refresh();
-	struct THREADINFO threadinfo;
-	pthread_create(&threadinfo.thread_ID, NULL, receiver, (void *)&threadinfo);
+	struct tInfo threadinfo;
+	pthread_create(&threadinfo.tid, NULL, receiver, (void *)&threadinfo);
 	sockfd = connect_with_server();
 	writeClientLog("Client connected to server");
 	isconnected = 1;
 	while(!ply)
 		;
-	play();
+	maingameLogic();
 }
 
 int connect_with_server() 
 {
-	int newfd, err_ret;
+	int fd_client, errorVal;
 	struct sockaddr_in serv_addr;
-	/* open a socket */
-	if((newfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) 
+
+	if((fd_client = socket(AF_INET, SOCK_STREAM, 0)) == -1) 
 	{
-		err_ret = errno;
+		errorVal = errno;
 		writeClientLog("Error in creating socket");
-		return err_ret;
+		return errorVal;
 	}
-	/* set initial values */
+
 	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(opt.port);
-	serv_addr.sin_addr.s_addr = inet_addr(serv);
+	serv_addr.sin_port = htons(info.port);
+	serv_addr.sin_addr.s_addr = inet_addr(serveraddr);
 	memset(&(serv_addr.sin_zero), 0, 8);
-	/* try to connect with server */
-	if(connect(newfd, (struct sockaddr *)&serv_addr, sizeof(struct sockaddr)) == -1) 
+
+	if(connect(fd_client, (struct sockaddr *)&serv_addr, sizeof(struct sockaddr)) == -1) 
 	{
-		err_ret = errno;
+		errorVal = errno;
 		writeClientLog("Error in connecting to server");
-		return err_ret;
+		return errorVal;
 	}
 	else 
 	{
 		writeClientLog("Connection successful");
-		return newfd;
+		return fd_client;
 	}
 }

@@ -1,11 +1,15 @@
 
-2017-04-29 00:56:44
+2017-04-29 22:53:26
 
 Welcome to TypeRacer v1.0
-Client Option selected
+
+2017-04-29 22:54:04
+
+Welcome to TypeRacer v1.0
+Client infoion selected
 Client started
 Host chosen: 
-192.168.43.49
+127.0.0.1
 Port chosen: 
 2048
 Connection successful
@@ -17,67 +21,44 @@ Scores sent to server
 Scoreboard Displayed
 Reached Main Menu
 
-2017-04-29 01:28:18
+2017-04-29 22:56:40
 
 Welcome to TypeRacer v1.0
-Client Option selected
+
+2017-04-29 22:56:56
+
+Welcome to TypeRacer v1.0
+Client infoion selected
 Client started
 Host chosen: 
-192.168.43.49
+127.0.0.1
 Port chosen: 
-4567
-Connection successful
-Client connected to server
-Game Started!!
-Server diconnected
-GAME OVER!
-Scores sent to server
-Scoreboard Displayed
-Reached Main Menu
-
-2017-04-29 01:34:02
-
-Welcome to TypeRacer v1.0
-
-2017-04-29 01:34:10
-
-Welcome to TypeRacer v1.0
-Client Option selected
-Client started
-Host chosen: 
-192.168.43.49
-Port chosen: 
-4567
+2048
 Connection successful
 Client connected to server
 Game Started!!
 GAME OVER!
 Scores sent to server
 Scoreboard Displayed
-Server diconnected
 Reached Main Menu
 
-2017-04-29 01:37:19
+2017-04-29 23:21:01
 
 Welcome to TypeRacer v1.0
 
-2017-04-29 01:39:19
+2017-04-29 23:21:21
 
 Welcome to TypeRacer v1.0
-
-2017-04-29 01:39:59
-
-Welcome to TypeRacer v1.0
-Client Option selected
+Client infoion selected
 Client started
 Host chosen: 
-192.168.43.49
+127.0.0.1
 Port chosen: 
-8765
+2048
 Connection successful
 Client connected to server
 Game Started!!
-
-2017-04-29 01:41:35
-
-Welcome to TypeRacer v1.0
+GAME OVER!
+Scores sent to server
+Scoreboard Displayed
+Reached Main Menu
